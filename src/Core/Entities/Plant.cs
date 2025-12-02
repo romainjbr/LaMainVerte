@@ -19,4 +19,9 @@ public class Plant
     public string? ImageUrl { get; set; } 
 
     public List<WateringLog> WateringLogs { get; set; } = new();
+
+    public void Water()
+    {
+        LastWatered = DateTime.UtcNow;
+    }
 }
