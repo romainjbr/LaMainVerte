@@ -1,5 +1,6 @@
 using Core.Entities;
-using Core.Interface.Repositories;
+
+namespace Core.Interface.Repositories;
 
 public interface IWateringLogRepository : IRepository<WateringLog>
 {
