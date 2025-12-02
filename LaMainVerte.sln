@@ -6,15 +6,15 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{827E0CD3-B72
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{8D626EA8-CB54-BC41-363A-217881BEBA6E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core", "src\Core\Core\Core.csproj", "{E1BFE4DB-3E38-3226-772E-F22F7539B468}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core", "src\Core\Core.csproj", "{E1BFE4DB-3E38-3226-772E-F22F7539B468}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure", "Infrastructure", "{9048EB7F-3875-A59E-E36B-5BD4C6F2A282}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure", "src\Infrastructure\Infrastructure\Infrastructure.csproj", "{0A10898E-9448-E900-A946-C208078BB2C5}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure", "src\Infrastructure\Infrastructure.csproj", "{0A10898E-9448-E900-A946-C208078BB2C5}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Presentation", "Presentation", "{6996BBF7-DB31-59BC-C7DD-9A7CCC6138C4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Presentation", "src\Presentation\Presentation\Presentation.csproj", "{8DD39233-74FD-2422-2EBF-05248E6B775F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Presentation", "src\Presentation\Presentation.csproj", "{8DD39233-74FD-2422-2EBF-05248E6B775F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
