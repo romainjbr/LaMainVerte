@@ -15,7 +15,7 @@
     <div class="header-right">
         <div class="plants-count-pill">@(AllPlants?.Count ?? 0) plants </div>
 
-        <button class="plants-add-btn" type="button">+ Add Plant</button>
+        <button class="plants-add-btn" type="button" @onclick="GoToAdd">+ Add Plant</button>
     </div>
 </div>
 
@@ -25,7 +25,7 @@
 }
 else if (AllPlants?.Count == 0)
 {
-    <button class="plants-add-btn" type="button">+ Add Plant</button>
+    <button class="plants-add-btn" type="button" @onclick="GoToAdd">+ Add Plant</button>
 }
 else
 {

@@ -1,0 +1,57 @@
+@page "/plants/add"
+@using Core.Dtos
+@using Core.Enums
+@using Core.Interface.Services
+@using Presentation.Components.Forms
+
+@inject NavigationManager NavigationManager
+@inject IPlantService Service
+
+<div class="plant-form-page">
+    <div class="plant-form-header">
+        <div class="plant-back-link" @onclick="NavigateBackToPlants">← Back to plants</div>
+    </div>
+
+    <div>
+        <h1 class="plant-form-title">Add a new plant</h1>
+        <p class="plant-form-subtitle">Fill in the details of your plant to be reminded to water it!</p>
+    </div>
+
+    <div class="plant-form-card">
+        <PlantForm Model="plant" 
+        OnValidSubmit= "SavePlant" 
+        OnCancel="CancelPlant"/>
+    </div>
+</div>
+
+@code
+{
+    private PlantFormModel plant = new();
+
+    public void NavigateBackToPlants()
+    {
+        NavigationManager.NavigateTo("/plants");
+    }
+
+    public async Task SavePlant() 
+    { 
+        var dto = new PlantCreateDto(
+            plant.Name, 
+            plant.Species,
+            plant.Location,
+            plant.LastWatered,
+            plant.WaterFrequency,
+            plant.ImageUrl
+        );
+
+        await Service.AddPlantAsync(dto, default);
+
+        NavigateBackToPlants();
+    }
+
+    public async Task CancelPlant() 
+    { 
+        plant = new();
+        NavigateBackToPlants();
+    }
+}

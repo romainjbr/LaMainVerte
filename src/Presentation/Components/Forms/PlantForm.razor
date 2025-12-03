@@ -1,0 +1,65 @@
+@using Core.Dtos
+@using Core.Enums
+
+<EditForm Model="Model">
+
+    <div class="form-container">
+        <label class="form-label">Name</label>
+        <InputText class="form-control" @bind-Value="Model.Name"/>    
+    </div>    
+
+    <div class="form-container">
+        <label class="form-label">Species</label>
+        <InputText class="form-control" @bind-Value="Model.Species"/>    
+    </div>  
+
+    <div class="form-container">
+        <label class="form-label">Location</label>
+        <InputText class="form-control" @bind-Value="Model.Location"/>    
+    </div>  
+
+    <div class="form-container">
+        <label class="form-label">Water Frequency</label>
+        <InputSelect class="form-select" @bind-value="Model.WaterFrequency">  
+            @foreach(var frequency in Enum.GetValues<WaterFrequency>())
+            {
+                <option value="@frequency">@frequency</option>
+            }  
+        </InputSelect>
+    </div> 
+    <div class="form-container">
+        <label class="form-label">Last Watered</label>
+        <InputDate class="form-control" @bind-Value="Model.LastWatered"/>    
+    </div>   
+
+    <button type="submit" class="button-submit" @onclick="HandleSave">Save</button>
+    <button type="button" class="button-cancel" @onclick="HandleCancel">Cancel</button>
+
+</EditForm>
+
+@code 
+{
+    [Parameter]
+    public PlantFormModel Model { get; set; } = default!;
+
+    [Parameter]
+    public EventCallback OnValidSubmit { get; set; }
+    
+    [Parameter]
+    public EventCallback OnCancel { get; set; }
+
+    public async Task HandleSave()
+    {
+        if (OnValidSubmit.HasDelegate)
+        {
+            await OnValidSubmit.InvokeAsync();
+        }
+    }
+    public async Task HandleCancel()
+    {
+        if (OnCancel.HasDelegate)
+        {
+            await OnCancel.InvokeAsync();
+        }
+    }
+}
