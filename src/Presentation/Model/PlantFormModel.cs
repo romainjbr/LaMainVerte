@@ -8,7 +8,7 @@ public class PlantFormModel
     public string Species { get; set; } = string.Empty;
     public string Location { get; set; } = string.Empty;
     public DateTime? LastWatered { get; set; }
-    public WaterFrequency? WaterFrequency { get; set; }
+    public WaterFrequency WaterFrequency { get; set; }
     public List<WateringLogReadDto> WateringLogs { get; set; } = new();
     public string ImageUrl { get; set; } = string.Empty;
 }

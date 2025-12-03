@@ -2,12 +2,26 @@
 @using Core.Dtos
 @using Core.Enums
 @using Core.Interface.Services
+@using Presentation.Components.Forms
 
 @inject NavigationManager NavigationManager
 @inject IPlantService Service
 
 <div class="plant-form-page">
+    <div>
+        <div @onclick="NavigateBackToPlants">← Back to plants</div>
+    </div>
 
+    <div>
+        <h1>Add a new plant</h1>
+        <p>Fill in the details of your plant to be reminded to water it!</p>
+    </div>
+
+    <div>
+        <PlantForm Model="plant" 
+        OnValidSubmit= "SavePlant" 
+        OnCancel="CancelPlant"/>
+    </div>
 </div>
 
 @code
@@ -19,7 +33,25 @@
         NavigationManager.NavigateTo("/plants");
     }
 
-    public async Task SavePlant() { }
+    public async Task SavePlant() 
+    { 
+        var dto = new PlantCreateDto(
+            plant.Name, 
+            plant.Species,
+            plant.Location,
+            plant.LastWatered,
+            plant.WaterFrequency,
+            plant.ImageUrl
+        );
 
-    public void CancelPlant() { }
+        await Service.AddPlantAsync(dto, default);
+
+        NavigateBackToPlants();
+    }
+
+    public async Task CancelPlant() 
+    { 
+        plant = new();
+        NavigateBackToPlants();
+    }
 }
