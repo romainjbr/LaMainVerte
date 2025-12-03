@@ -1,1 +1,31 @@
 @page "/plants"
+@using Core.Dtos
+@using Core.Interface.Services
+@using Presentation.Components.Cards
+
+@inject IPlantService Service
+
+<div>
+    @if (AllPlants?.Count == 0)
+    {
+        <p>Add a plant</p>
+    }
+
+    else
+    {
+        foreach(var plant in AllPlants)
+        {
+            <PlantCard Plant="plant"></PlantCard>
+        }
+    }
+</div>
+
+@code
+{
+    public List<PlantReadDto> AllPlants { get; set; } = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        AllPlants = await Service.GetAllPlantsAsync(default);
+    }
+}
