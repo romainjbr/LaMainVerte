@@ -5,15 +5,16 @@
 
 @inject IPlantService Service
 
-<div class=header>
+<div class="plants-header">
     <div class="header-left">
-        <div>Your Plants</div>
+        <div class="plants-title">Your Plants</div>
+        <p class="plants-subtitle">Your whole collection of plants is here!</p>
     </div>
 
     <div class="header-right">
-        <div>@(AllPlants?.Count ?? 0) plants </div>
+        <div class="plants-count-pill">@(AllPlants?.Count ?? 0) plants </div>
 
-        <button type="button">Add Plant</button>
+        <button class="plants-add-btn" type="button">+ Add Plant</button>
     </div>
 </div>
 
