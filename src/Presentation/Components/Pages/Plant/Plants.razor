@@ -5,6 +5,18 @@
 
 @inject IPlantService Service
 
+<div class=header>
+    <div class="header-left">
+        <div>Your Plants</div>
+    </div>
+
+    <div class="header-right">
+        <div>@(AllPlants?.Count ?? 0) plants </div>
+
+        <button type="button">Add Plant</button>
+    </div>
+</div>
+
 <div>
     @if (AllPlants?.Count == 0)
     {
