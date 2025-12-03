@@ -19,23 +19,28 @@
     </div>
 </div>
 
-<div>
-    @if (AllPlants?.Count == 0)
-    {
-        <p>Add a plant</p>
-    }
-
-    else
-    {
-        foreach(var plant in AllPlants)
+@if (AllPlants is null)
+{
+    <p><em>Loading plants...</em></p>
+}
+else if (AllPlants?.Count == 0)
+{
+    <button class="plants-add-btn" type="button">+ Add Plant</button>
+}
+else
+{
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4 plants-grid">
+        @foreach(var plant in AllPlants)
         {
-            <PlantCard Plant="plant"
-            OnDetails="() => GoToDetails(plant.Id)"
-            OnEdit="() => GoToEdit(plant.Id)"
-            OnDelete="() => HandleDelete(plant.Id) "></PlantCard>
+            <div class="col">
+                <PlantCard Plant="plant"
+                OnDetails="() => GoToDetails(plant.Id)"
+                OnEdit="() => GoToEdit(plant.Id)"
+                OnDelete="() => HandleDelete(plant.Id) "></PlantCard>
+            </div>
         }
-    }
-</div>
+    </div>
+}
 
 @code
 {
