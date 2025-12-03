@@ -31,10 +31,35 @@
         <label class="form-label">Last Watered</label>
         <InputDate class="form-control" @bind-Value="Model.LastWatered"/>    
     </div>   
+
+    <button type="submit" class="button-submit" @onclick="HandleSave">Save</button>
+    <button type="button" class="button-cancel" @onclick="HandleCancel">Cancel</button>
+
 </EditForm>
 
 @code 
 {
     [Parameter]
     public PlantFormModel Model { get; set; } = default!;
+
+    [Parameter]
+    public EventCallback OnValidSubmit { get; set; }
+    
+    [Parameter]
+    public EventCallback OnCancel { get; set; }
+
+    public async Task HandleSave()
+    {
+        if (OnValidSubmit.HasDelegate)
+        {
+            await OnValidSubmit.InvokeAsync();
+        }
+    }
+    public async Task HandleCancel()
+    {
+        if (OnCancel.HasDelegate)
+        {
+            await OnCancel.InvokeAsync();
+        }
+    }
 }
