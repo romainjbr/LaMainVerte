@@ -1,0 +1,59 @@
+@using Core.Dtos
+<div class="plant-card">
+    <div>
+        <div class="plant-card_image-wrapper">
+
+            <img src="@Plant.ImageUrl" alt="@Plant.Name" class="plant-card_image" />
+
+            @if (!string.IsNullOrWhiteSpace(Plant.Location))
+            {
+                <span class="plant-card-location">@Plant.Location</span>
+            }
+        </div>
+    </div>
+
+    <div class="plant-card_body">
+        <div class="plant-card_header">
+            <div>
+                <h3 class="plant-card_title">@Plant.Name</h3>
+
+                @if (!string.IsNullOrWhiteSpace(Plant.Species))
+                {
+                    <p class="plant-card_subtitle">@Plant.Species</p>
+                }
+            </div>
+
+            <span>@Plant.WaterFrequency</span>
+        </div>
+
+        <div class="plant-card-bttm">
+            <div class="plant-card_last-watered">
+                <span class="label">Last watered</span>
+                <span>@(Plant.LastWatered?.ToString("d") ?? "Never")</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="plant-card_footer">
+        <button class="plant-btn plant-btn-details" @onclick="OnDetailsClicked">Details</button>
+        <button class="plant-btn plant-btn-edit" @onclick="OnEditClicked">Edit</button>
+        <button class="plant-btn plant-btn-delete" @onclick="OnDeleteClicked">Delete</button>
+    </div>
+</div>
+
+@code 
+{
+    [Parameter] 
+    public PlantReadDto Plant { get; set;} = default!;
+
+    [Parameter] 
+    public EventCallback OnDetails { get; set; }
+    [Parameter] 
+    public EventCallback OnEdit { get; set; }
+    [Parameter] 
+    public EventCallback OnDelete { get; set; }
+
+    private Task OnDetailsClicked() => OnDetails.InvokeAsync();
+    private Task OnEditClicked() => OnEdit.InvokeAsync();
+    private Task OnDeleteClicked() => OnDelete.InvokeAsync();
+}
