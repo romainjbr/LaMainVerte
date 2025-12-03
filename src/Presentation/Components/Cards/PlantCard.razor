@@ -1,0 +1,17 @@
+@using Core.Dtos
+<div class="plant-card">
+    <div>
+        <img src="@Plant.ImageUrl" alt="@Plant.Name" class="plant-card_image" />
+
+        @if (!string.IsNullOrWhiteSpace(Plant.Location))
+        {
+            <span>@Plant.Location</span>
+        }
+    </div>
+</div>
+
+@code 
+{
+    [Parameter] 
+    public PlantReadDto Plant { get; set;} = default!;
+}
