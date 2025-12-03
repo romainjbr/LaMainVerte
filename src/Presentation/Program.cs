@@ -1,6 +1,26 @@
+using Core.Interface.Repositories;
+using Core.Interface.Services;
+using Core.Interfaces.Repositories;
+using Core.Services;
+using Infrastructure.Data;
+using Microsoft.EntityFrameworkCore;
 using Presentation.Components;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Configuration
+    .AddJsonFile("appsettings.json", optional: true)
+    .AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json", optional: true)
+    .AddEnvironmentVariables();
+
+var connectionString = builder.Configuration.GetConnectionString("AZURE_SQL_CONNECTIONSTRING");
+
+builder.Services.AddDbContext<PlantDbContext>(options => options.UseSqlServer(connectionString));
+
+builder.Services.AddScoped(typeof(IRepository<>), typeof(EfRepository<>));
+builder.Services.AddScoped<IWateringLogRepository, WateringLogRepository>();
+builder.Services.AddScoped<IPlantService, PlantService>();
+builder.Services.AddScoped<IWateringLogService, WateringLogService>();
 
 // Add services to the container.
 builder.Services.AddRazorComponents()
