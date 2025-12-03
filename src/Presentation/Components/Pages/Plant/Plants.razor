@@ -3,6 +3,7 @@
 @using Core.Interface.Services
 @using Presentation.Components.Cards
 
+@inject NavigationManager NavigationManager
 @inject IPlantService Service
 
 <div class="plants-header">
@@ -28,7 +29,10 @@
     {
         foreach(var plant in AllPlants)
         {
-            <PlantCard Plant="plant"></PlantCard>
+            <PlantCard Plant="plant"
+            OnDetails="() => GoToDetails(plant.Id)"
+            OnEdit="() => GoToEdit(plant.Id)"
+            OnDelete="() => HandleDelete(plant.Id) "></PlantCard>
         }
     }
 </div>
@@ -41,4 +45,13 @@
     {
         AllPlants = await Service.GetAllPlantsAsync(default);
     }
+
+    private void GoToAdd() => NavigationManager.NavigateTo("/plants/add");
+
+    private void GoToDetails(Guid id) => NavigationManager.NavigateTo($"/plants/{id}");
+
+    private void GoToEdit(Guid id) => NavigationManager.NavigateTo($"/plants/edit/{id}");
+
+    private void HandleDelete(Guid id) => Service.DeletePlantAsync(id, default);
+
 }

@@ -30,10 +30,27 @@
             </div>
         </div>
     </div>
+
+    <div class="plant-card_footer">
+        <button class="plant-btn plant-btn-details" @onclick="OnDetailsClicked">Details</button>
+        <button class="plant-btn plant-btn-edit" @onclick="OnEditClicked">Edit</button>
+        <button class="plant-btn plant-btn-delete" @onclick="OnDeleteClicked">Delete</button>
+    </div>
 </div>
 
 @code 
 {
     [Parameter] 
     public PlantReadDto Plant { get; set;} = default!;
+
+    [Parameter] 
+    public EventCallback OnDetails { get; set; }
+    [Parameter] 
+    public EventCallback OnEdit { get; set; }
+    [Parameter] 
+    public EventCallback OnDelete { get; set; }
+
+    private Task OnDetailsClicked() => OnDetails.InvokeAsync();
+    private Task OnEditClicked() => OnEdit.InvokeAsync();
+    private Task OnDeleteClicked() => OnDelete.InvokeAsync();
 }
