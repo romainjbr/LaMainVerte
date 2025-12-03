@@ -8,6 +8,28 @@
             <span>@Plant.Location</span>
         }
     </div>
+
+    <div class="plant-card_body">
+        <div class="plant-card_header">
+            <div>
+                <h3 class="plant-card_title">@Plant.Name</h3>
+
+                @if (!string.IsNullOrWhiteSpace(Plant.Species))
+                {
+                    <p class="plant-card_subtitle">@Plant.Species</p>
+                }
+            </div>
+
+            <span>@Plant.WaterFrequency</span>
+        </div>
+
+        <div>
+            <div class="plant-card_last-watered">
+                <span class="label">Last watered</span>
+                <span>@(Plant.LastWatered?.ToString("d") ?? "Never")</span>
+            </div>
+        </div>
+    </div>
 </div>
 
 @code 
