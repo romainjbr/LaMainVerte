@@ -1,0 +1,25 @@
+@page "/plants/add"
+@using Core.Dtos
+@using Core.Enums
+@using Core.Interface.Services
+
+@inject NavigationManager NavigationManager
+@inject IPlantService Service
+
+<div class="plant-form-page">
+
+</div>
+
+@code
+{
+    private PlantFormModel plant = new();
+
+    public void NavigateBackToPlants()
+    {
+        NavigationManager.NavigateTo("/plants");
+    }
+
+    public async Task SavePlant() { }
+
+    public void CancelPlant() { }
+}
