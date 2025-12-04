@@ -2,10 +2,71 @@
 @using Core.Dtos
 @using Core.Enums
 @using Core.Interface.Services
+@using Presentation.Components.Forms
+
 @inject IPlantService Service
 @inject NavigationManager NavigationManager
+
+<div class="plant-form-page">
+    @if (isLoading)
+    {
+        <p><em>Loading...</em></p>
+    }
+    else
+    {
+        <div class="plant-form-header">
+            <button class="plant-back-link" @onclick="NavigateBackToPlants">← Back to plants</button>
+
+            <div>
+                <h1 class="plant-form-title">Edit plant</h1>
+                <p class="plant-form-subtitle">@plant.Name</p>
+            </div>
+        </div>
+
+        <div class="form-plant-card">
+            <PlantForm Model="plant"
+            OnValidSubmit="HandleSubmit"
+            OnCancel="HandleCancel"/>
+        </div>
+    }
+</div>
+
 
 @code 
 {
     private PlantFormModel plant;
+    private bool isLoading = true;
+
+    [Parameter]
+    public Guid Id { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        var dto = await Service.GetPlantByIdAsync(Id, default);
+
+        plant = new PlantFormModel
+        {
+            Name = dto?.Name ?? string.Empty,
+            Species = dto?.Species ?? string.Empty,
+            Location = dto?.Location ?? string.Empty,
+            LastWatered = dto?.LastWatered,
+            WaterFrequency = dto?.WaterFrequency ?? default,
+            ImageUrl = dto?.ImageUrl ?? string.Empty
+        };
+
+        isLoading = false;
+    }
+
+    public void NavigateBackToPlants()
+    {
+        NavigationManager.NavigateTo("/plants");
+    }
+
+    public void HandleSubmit()
+    {        
+    }
+
+    public void HandleCancel()
+    {        
+    }
 }
