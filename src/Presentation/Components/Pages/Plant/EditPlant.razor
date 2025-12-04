@@ -1,4 +1,4 @@
-@page "/plant/edit/{id:guid}"
+@page "/plants/edit/{id:guid}"
 @using Core.Dtos
 @using Core.Enums
 @using Core.Interface.Services
@@ -23,7 +23,7 @@
             </div>
         </div>
 
-        <div class="form-plant-card">
+        <div class="plant-form-card">
             <PlantForm Model="plant"
             OnValidSubmit="HandleSubmit"
             OnCancel="HandleCancel"/>
@@ -63,10 +63,26 @@
     }
 
     public void HandleSubmit()
-    {        
+    {  
+        if (plant is null) { return; }
+
+        var dto = new PlantUpdateDto(
+            plant.Id,
+            plant.Name, 
+            plant.Species, 
+            plant.Location,
+            plant.LastWatered ?? default,
+            plant.WaterFrequency,
+            plant.WateringLogs,
+            plant.ImageUrl
+        );
+
+        NavigateBackToPlants();      
     }
 
     public void HandleCancel()
     {        
+        plant = new();
+        NavigateBackToPlants();
     }
 }
