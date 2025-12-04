@@ -1,0 +1,11 @@
+@page "/plant/edit/{id:guid}"
+@using Core.Dtos
+@using Core.Enums
+@using Core.Interface.Services
+@inject IPlantService Service
+@inject NavigationManager NavigationManager
+
+@code 
+{
+    private PlantFormModel plant;
+}
