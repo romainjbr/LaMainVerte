@@ -1,30 +1,29 @@
-﻿<div class="top-row ps-3 navbar navbar-dark">
-    <div class="container-fluid">
-        <a class="navbar-brand" href="">Presentation</a>
+﻿<div class="sidebar-shell">
+    <div class="sidebar-inner">
+        <div class="sidebar-app">
+            <div class="app-text">La Main Verte</div>
+        </div>
+
+        <div class="sidebar-user">
+            <img src="images/avatar.png" class="user-avatar" />
+            <div class="user-info">
+                <div class="user-name">UserEx</div>
+                <div class="user-sub">SubEx</div>
+            </div>
+        </div>
+
+        <nav class="sidebar-nav">
+            <NavLink class="nav-link" href="dashboard">
+                <span>Dashboard</span>
+            </NavLink>
+
+            <NavLink class="nav-link" href="plants">
+                <span>Plants</span>
+            </NavLink>
+
+            <NavLink class="nav-link" href="settings">
+                <span>Settings</span>
+            </NavLink>
+        </nav>
     </div>
 </div>
-
-<input type="checkbox" title="Navigation menu" class="navbar-toggler" />
-
-<div class="nav-scrollable" onclick="document.querySelector('.navbar-toggler').click()">
-    <nav class="nav flex-column">
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
-                <span class="bi bi-house-door-fill-nav-menu" aria-hidden="true"></span> Home
-            </NavLink>
-        </div>
-
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="counter">
-                <span class="bi bi-plus-square-fill-nav-menu" aria-hidden="true"></span> Counter
-            </NavLink>
-        </div>
-
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="weather">
-                <span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> Weather
-            </NavLink>
-        </div>
-    </nav>
-</div>
-
