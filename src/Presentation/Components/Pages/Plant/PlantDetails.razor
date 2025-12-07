@@ -122,9 +122,14 @@
 
     protected override async Task OnInitializedAsync()
     {
+        await LoadData();
+    }
+
+    private async Task LoadData()
+    {
         plant = await PlantService.GetPlantByIdAsync(Id, default);
         wateringLogs = await WateringLogService.GetWateringLogsByPlantAsync(Id, default);
-        isLoading = false;
+        isLoading = false;       
     }
 
     public void NavigateBackToPlants()
@@ -137,7 +142,8 @@
         var wateringLog = new WateringLogCreateDto(plant!.Id, DateTime.UtcNow);
         
         await WateringLogService.AddAsync(wateringLog, default);
-
         await PlantService.WaterPlant(plant.Id, default);
+
+        await LoadData();
     }
 }
