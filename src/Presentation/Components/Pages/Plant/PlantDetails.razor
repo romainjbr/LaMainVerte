@@ -1,0 +1,149 @@
+@page "/plants/{Id:guid}"
+
+@using Core.Dtos
+@using Core.Interface.Services
+
+@inject NavigationManager NavigationManager
+@inject IPlantService PlantService
+@inject IWateringLogService WateringLogService
+
+<div>
+    @if (isLoading)
+    {
+        <p><em>Loading...</em></p>
+    }
+    else if (plant is null)
+    {
+        <div>
+            Plant not found!
+        </div>
+    }
+    else
+    {
+        <div class="plant-details-header">
+            <button class="plant-back-link" @onclick="NavigateBackToPlants">← Back to plants</button>
+
+            <div>
+                <h1 class="plant-details-title">@plant.Name</h1>
+
+                @if (!string.IsNullOrWhiteSpace(plant.Species))
+                {
+                    <p class="plant-details-subtitle">@plant.Species</p>
+                }
+            </div>
+        </div>
+
+        <div class="plant-details-layout">
+            <div class="plant-details-card">
+                <div class="plant-details-main">
+                    <div class="plant-details-image">
+                        <img src=@plant.ImageUrl alt="@plant.Name" />
+                    </div>
+
+                    <div class="plant-details-meta">
+                        <div class="plant-details-chip">
+                            @if (!string.IsNullOrWhiteSpace(plant.Location))
+                            {
+                                <span class="plant-chip">@plant.Location</span>
+                            }
+
+                            <span class="plant-chip plant-chip_soft">
+                                Water: @plant.WaterFrequency
+                            </span>
+                        </div>
+
+                        <div class="plant-details-meta-grid">
+                            <div class="meta-item">
+                                <span class="label">Last watered</span>
+                                <span>@(plant.LastWatered?.ToString("d") ?? "Never")</span>
+                            </div>
+                            <div class="meta-item">
+                                <span class="label">ID</span>
+                                <span>#@plant.Id</span>
+                            </div>
+                        </div>
+
+                        <div class="plant-details-actions">
+                            <button class="plant-btn plant-btn_water" @onclick="WaterNow">
+                                Water now
+                            </button>
+                            <button class="plant-btn plant-btn_back" @onclick="NavigateBackToPlants">
+                                Back to list
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="plant-details-history">
+                <div class="plant-details-history-header">
+                    <h2>Watering history</h2>
+                    <p>Track when this plant was last watered:</p>
+                </div>
+
+                @if (wateringLogs is null || wateringLogs.Count == 0)
+                {
+                    <p class="plant-history-empty">No watering logs yet.</p>
+                }
+                else
+                {
+                    <table class="plant-history-table">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        @foreach (var log in wateringLogs)
+                        {
+                            <tr>
+                                <td>@log.Date.ToString("g")</td>
+                            </tr>
+                        }
+                        </tbody>
+                    </table>
+                }
+            </div>
+        </div>
+    }
+
+
+</div>
+
+@code {
+    [Parameter]
+    public Guid Id { get; set; }
+
+    private bool isLoading = true;
+
+    private PlantReadDto? plant;
+
+    private List<WateringLogReadDto>? wateringLogs;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadData();
+    }
+
+    private async Task LoadData()
+    {
+        plant = await PlantService.GetPlantByIdAsync(Id, default);
+        wateringLogs = await WateringLogService.GetWateringLogsByPlantAsync(Id, default);
+        isLoading = false;       
+    }
+
+    public void NavigateBackToPlants()
+    {
+        NavigationManager.NavigateTo("/plants");
+    }
+
+    public async Task WaterNow()
+    {
+        var wateringLog = new WateringLogCreateDto(plant!.Id, DateTime.UtcNow);
+        
+        await WateringLogService.AddAsync(wateringLog, default);
+        await PlantService.WaterPlant(plant.Id, default);
+
+        await LoadData();
+    }
+}
