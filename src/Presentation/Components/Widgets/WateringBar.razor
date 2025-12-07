@@ -1,6 +1,124 @@
 @using Core.Dtos
+@using Core.Enums
+@if (Plant is not null)
+{
+    <div class="mb-2">
+        <div class="d-flex justify-content-between">
+            <small>Water status</small>
+            <small>@StatusText</small>
+        </div>
 
+        <div class="progress" style="height: 8px;">
+            <div class="progress-bar @BarClass"
+                role="progressbar"
+                style="@WidthStyle"
+                aria-valuenow="@Percentage"
+                aria-valuemin="0"
+                aria-valuemax="100">
+            </div>
+        </div>
+    </div>
+}
 
 @code {
     [Parameter] public PlantReadDto Plant { get; set; } = default!;
+
+    private double Percentage => CalculatePercentage();
+    private string WidthStyle => $"width: {Percentage:0}%";
+
+    private string StatusText
+    {
+        get
+        {
+            switch(GetWateredStatus())
+            {
+                case WaterStatus.NEVER_WATERED:
+                    return "Never Watered";
+                case WaterStatus.OVERDUE:
+                default:
+                    return "Overdue";
+                case WaterStatus.DUE_SOON:
+                    return "Due soon";
+                case WaterStatus.WELL_WATERED:
+                    return "Well watered";
+            }
+        }
+    }
+
+    private string BarClass
+    {
+        get
+        {
+            switch(GetWateredStatus())
+            {
+                case WaterStatus.NEVER_WATERED:
+                case WaterStatus.OVERDUE:
+                default:
+                    return "bg-danger";
+                case WaterStatus.DUE_SOON:
+                    return "bg-warning";
+                case WaterStatus.WELL_WATERED:
+                    return "bg-success";
+            }
+        }
+    }
+
+    private double CalculatePercentage()
+    {
+        if (Plant.LastWatered is null)
+        {
+            return 100;
+        }
+
+        var daysSinceLastWater = (DateTime.Today - Plant.LastWatered.Value.Date).TotalDays;
+        var freqDays = GetFrequencyDays(Plant.WaterFrequency);
+
+        var ratio = daysSinceLastWater / freqDays;
+        var perc = ratio * 100;
+
+        return perc;
+    }
+
+    private WaterStatus GetWateredStatus()
+    {
+        if (Plant.LastWatered is null) 
+        {
+            return WaterStatus.NEVER_WATERED;
+        }
+
+        var daysSince = (DateTime.Today - Plant.LastWatered.Value.Date).TotalDays;
+        var freqDays = GetFrequencyDays(Plant.WaterFrequency);
+
+        if (daysSince <= freqDays * 0.5)
+        {
+            return WaterStatus.WELL_WATERED;
+        }
+
+        if (daysSince <= freqDays)
+        {
+            return WaterStatus.DUE_SOON;
+        }
+
+        return WaterStatus.OVERDUE;
+    }
+
+    private int GetFrequencyDays(WaterFrequency frequency)
+    { 
+        switch (frequency)
+        {
+            case WaterFrequency.Daily:
+                return 1;
+            case WaterFrequency.EveryTwoDays:
+                return 2;
+            case WaterFrequency.TwiceAWeek:
+                return 3;
+            case WaterFrequency.Weekly:
+            default:
+                return 7;
+            case WaterFrequency.EveryTwoWeeks:
+                return 14;
+            case WaterFrequency.Monthly:
+                return 30;
+        };
+    }
 }
