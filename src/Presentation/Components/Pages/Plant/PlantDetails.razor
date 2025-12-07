@@ -4,7 +4,8 @@
 @using Core.Interface.Services
 
 @inject NavigationManager NavigationManager
-@inject IPlantService Service
+@inject IPlantService PlantService
+@inject IWateringLogService WateringLogService
 
 <div>
     @if (isLoading)
@@ -61,6 +62,15 @@
                                 <span>#@plant.Id</span>
                             </div>
                         </div>
+
+                        <div class="plant-details-actions">
+                            <button class="plant-btn plant-btn_water" @onclick="WaterNow">
+                                Water now
+                            </button>
+                            <button class="plant-btn plant-btn_back" @onclick="NavigateBackToPlants">
+                                Back to list
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -80,12 +90,21 @@
 
     protected override async Task OnInitializedAsync()
     {
-        plant = await Service.GetPlantByIdAsync(Id, default);
+        plant = await PlantService.GetPlantByIdAsync(Id, default);
         isLoading = false;
     }
 
     public void NavigateBackToPlants()
     {
         NavigationManager.NavigateTo("/plants");
+    }
+
+    public async Task WaterNow()
+    {
+        var wateringLog = new WateringLogCreateDto(plant!.Id, DateTime.UtcNow);
+        
+        await WateringLogService.AddAsync(wateringLog, default);
+
+        await PlantService.WaterPlant(plant.Id, default);
     }
 }

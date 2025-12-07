@@ -113,3 +113,38 @@
     letter-spacing: 0.06em;
     margin-bottom: 0.1rem;
 }
+
+/* BUTTONS */
+
+.plant-btn {
+    border-radius: 999px;
+    font-size: 0.8rem;
+    padding: 0.35rem 1rem;
+    border: 1px solid transparent;
+    background: transparent;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+}
+
+.plant-btn_water {
+    border-color: #22c55e;
+    background: #22c55e;
+    color: #ffffff;
+}
+
+.plant-btn_water:hover {
+    background: #16a34a;
+    border-color: #16a34a;
+}
+
+.plant-btn_back {
+    border-color: #e5e7eb;
+    background: #ffffff;
+    color: #4b5563;
+}
+
+.plant-btn_back:hover {
+    background: #f9fafb;
+}
