@@ -74,6 +74,36 @@
                     </div>
                 </div>
             </div>
+
+            <div class="plant-details-history">
+                <div class="plant-details-history-header">
+                    <h2>Watering history</h2>
+                    <p>Track when this plant was last watered:</p>
+                </div>
+
+                @if (wateringLogs is null || wateringLogs.Count == 0)
+                {
+                    <p class="plant-history-empty">No watering logs yet.</p>
+                }
+                else
+                {
+                    <table class="plant-history-table">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        @foreach (var log in wateringLogs)
+                        {
+                            <tr>
+                                <td>@log.Date.ToString("g")</td>
+                            </tr>
+                        }
+                        </tbody>
+                    </table>
+                }
+            </div>
         </div>
     }
 
@@ -88,9 +118,12 @@
 
     private PlantReadDto? plant;
 
+    private List<WateringLogReadDto>? wateringLogs;
+
     protected override async Task OnInitializedAsync()
     {
         plant = await PlantService.GetPlantByIdAsync(Id, default);
+        wateringLogs = await WateringLogService.GetWateringLogsByPlantAsync(Id, default);
         isLoading = false;
     }
 

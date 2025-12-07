@@ -148,3 +148,58 @@
 .plant-btn_back:hover {
     background: #f9fafb;
 }
+
+/* WATERING HISTORY */
+.plant-details-history {
+    border-radius: 18px;
+    background: #ffffff;
+    padding: 1.2rem 1.4rem;
+    box-shadow: 0 10px 25px rgba(15, 23, 42, 0.06);
+}
+
+.plant-details-history-header h2 {
+    margin: 0;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #111827;
+}
+
+.plant-details-history-header p {
+    margin: 0.2rem 0 0.8rem;
+    font-size: 0.8rem;
+    color: #6b7280;
+}
+
+.plant-history-empty {
+    margin: 0.25rem 0 0;
+    font-size: 0.85rem;
+    color: #6b7280;
+}
+
+/* Table styling */
+.plant-history-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.82rem;
+}
+
+.plant-history-table thead {
+    background: #f9fafb;
+}
+
+.plant-history-table th,
+.plant-history-table td {
+    padding: 0.45rem 0.6rem;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.plant-history-table th {
+    text-align: left;
+    font-weight: 600;
+    font-size: 0.78rem;
+    color: #6b7280;
+}
+
+.plant-history-table tbody tr:hover {
+    background: #f9fafb;
+}
