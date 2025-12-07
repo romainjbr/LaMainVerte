@@ -1,6 +1,39 @@
 @page "/plants/{Id:guid}"
 
+@using Core.Dtos
+@using Core.Interface.Services
+
+@inject IPlantService Service
+
+<div>
+    @if (isLoading)
+    {
+        <p><em>Loading...</em></p>
+    }
+    else if (plant is null)
+    {
+        <div>
+            Plant not found!
+        </div>
+    }
+    else
+    {
+        
+    }
+
+</div>
+
 @code {
     [Parameter]
     public Guid Id { get; set; }
+
+    private bool isLoading = true;
+
+    private PlantReadDto? plant;
+
+    protected override async Task OnInitializedAsync()
+    {
+        plant = await Service.GetPlantByIdAsync(Id, default);
+        isLoading = false;
+    }
 }
