@@ -8,6 +8,15 @@ main {
     flex: 1;
 }
 
+.main-shell {
+    flex: 1;
+    background-color: #ffffff;
+    padding: 2rem;
+    overflow: hidden;
+    border-left: 1px solid #e5e7eb;
+}
+
+
 .top-row {
     background-color: #f7f7f7;
     border-bottom: 1px solid #d6d5d5;
