@@ -31,7 +31,42 @@
                 }
             </div>
         </div>
+
+        <div class="plant-details-layout">
+            <div class="plant-details-card">
+                <div class="plant-details-main">
+                    <div class="plant-details-image">
+                        <img src=@plant.ImageUrl alt="@plant.Name" />
+                    </div>
+
+                    <div class="plant-details-meta">
+                        <div class="plant-details-chip">
+                            @if (!string.IsNullOrWhiteSpace(plant.Location))
+                            {
+                                <span class="plant-chip">@plant.Location</span>
+                            }
+
+                            <span class="plant-chip plant-chip_soft">
+                                Water: @plant.WaterFrequency
+                            </span>
+                        </div>
+
+                        <div class="plant-details-meta-grid">
+                            <div class="meta-item">
+                                <span class="label">Last watered</span>
+                                <span>@(plant.LastWatered?.ToString("d") ?? "Never")</span>
+                            </div>
+                            <div class="meta-item">
+                                <span class="label">ID</span>
+                                <span>#@plant.Id</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     }
+
 
 </div>
 
