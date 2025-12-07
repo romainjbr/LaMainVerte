@@ -15,7 +15,7 @@
 
 /* IMAGE */
 
-.plant-card__image-wrapper {
+.plant-card_image-wrapper {
     position: relative;
     height: 170px;
     overflow: hidden;
