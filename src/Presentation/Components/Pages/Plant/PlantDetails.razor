@@ -3,6 +3,7 @@
 @using Core.Dtos
 @using Core.Interface.Services
 
+@inject NavigationManager NavigationManager
 @inject IPlantService Service
 
 <div>
@@ -18,7 +19,18 @@
     }
     else
     {
-        
+        <div class="plant-details-header">
+            <button class="plant-back-link" @onclick="NavigateBackToPlants">← Back to plants</button>
+
+            <div>
+                <h1 class="plant-details-title">@plant.Name</h1>
+
+                @if (!string.IsNullOrWhiteSpace(plant.Species))
+                {
+                    <p class="plant-details-subtitle">@plant.Species</p>
+                }
+            </div>
+        </div>
     }
 
 </div>
@@ -35,5 +47,10 @@
     {
         plant = await Service.GetPlantByIdAsync(Id, default);
         isLoading = false;
+    }
+
+    public void NavigateBackToPlants()
+    {
+        NavigationManager.NavigateTo("/plants");
     }
 }
