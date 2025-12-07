@@ -1,15 +1,12 @@
 @using Core.Dtos
 <div class="plant-card">
-    <div>
-        <div class="plant-card_image-wrapper">
+    <div class="plant-card_image-wrapper">
+        <img src="images/plant_1.jpg" alt="@Plant.Name" class="plant-card_image" />
 
-            <img src="@Plant.ImageUrl" alt="@Plant.Name" class="plant-card_image" />
-
-            @if (!string.IsNullOrWhiteSpace(Plant.Location))
-            {
-                <span class="plant-card-location">@Plant.Location</span>
-            }
-        </div>
+        @if (!string.IsNullOrWhiteSpace(Plant.Location))
+        {
+            <span class="plant-card-location">@Plant.Location</span>
+        }
     </div>
 
     <div class="plant-card_body">
@@ -23,7 +20,7 @@
                 }
             </div>
 
-            <span>@Plant.WaterFrequency</span>
+            <span class="plant-card-frequency">@Plant.WaterFrequency</span>
         </div>
 
         <div class="plant-card-bttm">
