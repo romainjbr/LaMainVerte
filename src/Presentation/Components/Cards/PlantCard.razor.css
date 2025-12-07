@@ -98,6 +98,14 @@
 }
 
 /* FOOTER */
+.plant-card_footer {
+    border-top: 1px solid #f3f4f6;
+    padding: 0.6rem 0.9rem 0.75rem;
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.45rem;
+}
+
 .plant-btn {
     border-radius: 999px;
     font-size: 0.8rem;
