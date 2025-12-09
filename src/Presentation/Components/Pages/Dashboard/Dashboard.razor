@@ -1,5 +1,6 @@
 @page "/dashboard"
 
+@using Core.Dtos
 @using Core.Interface.Services
 
 @inject IPlantService PlantService
@@ -31,6 +32,35 @@ else
                 <button class="metric-card_link" @onclick="NavigateBackToPlants">View plants →</button>
             </div>
         </div>
+
+        <div class="col-md-3 mb-3">
+            <div class="metric-card">
+                <div class="metric-card_label">Needing water</div>
+                <div class="metric-card_value">@plantsNeedingWaterCount</div>
+
+                @if (plantsNeedingWaterCount > 0)
+                {
+                    <ul class="metric-card_list">
+                        @foreach (var plant in plantsNeedingWater.Take(3))
+                        {
+                            <li>@plant.Name</li>
+                        }
+                    </ul>
+                }
+                else
+                {
+                    <p class="metric-card_hint">All plants are watered!</p>
+                }
+            </div>
+        </div>
+
+        <div class="col-md-3 mb-3">
+            <div class="metric-card">
+                <div class="metric-card_label">Watered this week</div>
+                <div class="metric-card_value">@wateredThisWeek</div>
+                <p class="metric-card_hint">Waterings in the last 7 days.</p>
+            </div>
+        </div>
     </div>
 }
 
@@ -39,13 +69,28 @@ else
     private bool isLoading = true;
     private DateTime today = DateTime.Today;
 
+    private List<PlantReadDto> plantsNeedingWater = new();
+    private int plantsNeedingWaterCount;
+
+    private List<WateringLogReadDto> recentWateringLogs = new();
+
     private int totalPlants = 5;
+
+    private int wateredThisWeek;
 
     protected override async Task OnInitializedAsync()
     {
         var plants = await PlantService.GetAllPlantsAsync(default);
         totalPlants = plants.Count;
-        
+
+        plantsNeedingWater = await PlantService.GetPlantsNeedingWater(default);
+        plantsNeedingWaterCount = plantsNeedingWater.Count;
+
+        recentWateringLogs = await WateringLogService.GetRecentAsync(100, default);
+
+        var weekStart = today.AddDays(-7);
+        wateredThisWeek = recentWateringLogs.Count(l => l.Date.Date >= weekStart);
+
         isLoading = false;
     }
 

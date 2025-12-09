@@ -86,3 +86,9 @@
 .metric-card_link:hover {
     text-decoration: underline;
 }
+
+.metric-card_hint {
+    margin: 0.2rem 0 0;
+    font-size: 0.8rem;
+    color: #6b7280;
+}
