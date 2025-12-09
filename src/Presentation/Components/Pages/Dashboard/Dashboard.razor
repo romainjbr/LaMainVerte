@@ -1,0 +1,28 @@
+@page "/dashboard"
+
+@using Core.Interface.Services
+
+@inject IPlantService PlantService
+@inject IWateringLogService WateringLogService
+@inject NavigationManager Navigation
+
+<div class="dash-header">
+    <div class="dash-header_left">
+        <h1 class="dash-title">Dashboard</h1>
+        <p class="dash-subtitle">
+            Overview of your plants and watering activity.
+        </p>
+    </div>
+
+    <div class="dash-header_right">
+        <div class="dash-tag">
+            Today • @today.ToString("D")
+        </div>
+    </div>
+</div>
+
+
+@code {
+    private bool isLoading = true;
+    private DateTime today = DateTime.Today;
+}
