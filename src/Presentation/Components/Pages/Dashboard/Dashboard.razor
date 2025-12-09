@@ -4,25 +4,53 @@
 
 @inject IPlantService PlantService
 @inject IWateringLogService WateringLogService
-@inject NavigationManager Navigation
+@inject NavigationManager NavigationManager
 
 <div class="dash-header">
     <div class="dash-header_left">
         <h1 class="dash-title">Dashboard</h1>
-        <p class="dash-subtitle">
-            Overview of your plants and watering activity.
-        </p>
+        <p class="dash-subtitle">Overview of your plants and watering activity. </p>
     </div>
 
     <div class="dash-header_right">
-        <div class="dash-tag">
-            Today • @today.ToString("D")
-        </div>
+        <div class="dash-tag">Today • @today.ToString("D")</div>
     </div>
 </div>
+
+@if (isLoading)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <div class="row mb-4 dash-metrics">
+        <div class="col-md-3 mb-3">
+            <div class="metric-card">
+                <div class="metric-card_label">Total plants</div>
+                <div class="metric-card_value">@totalPlants</div>
+                <button class="metric-card_link" @onclick="NavigateBackToPlants">View plants →</button>
+            </div>
+        </div>
+    </div>
+}
 
 
 @code {
     private bool isLoading = true;
     private DateTime today = DateTime.Today;
+
+    private int totalPlants = 5;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var plants = await PlantService.GetAllPlantsAsync(default);
+        totalPlants = plants.Count;
+        
+        isLoading = false;
+    }
+
+    public void NavigateBackToPlants()
+    {
+        NavigationManager.NavigateTo("/plants");
+    }
 }
