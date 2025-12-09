@@ -7,9 +7,9 @@ namespace Core.Services;
 
 public class PlantService : IPlantService
 {
-    IRepository<Plant> _repo; 
+    private readonly IPlantRepository _repo; 
 
-    public PlantService(IRepository<Plant> repo)
+    public PlantService(IPlantRepository repo)
     {
         _repo = repo;
     }
@@ -67,5 +67,11 @@ public class PlantService : IPlantService
         await _repo.UpdateAsync(entity, token);
 
         return true;
+    }
+
+    public async Task<List<PlantReadDto>> GetPlantsNeedingWater(CancellationToken token)
+    {
+        var plants = await _repo.GetPlantsNeedingWater(token);
+        return plants.Select(x => x.ToDto()).ToList();
     }
 }
