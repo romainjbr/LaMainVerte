@@ -11,11 +11,14 @@ public class PlantRepository : EfRepository<Plant>, IPlantRepository
 
     public async Task<List<Plant>> GetPlantsNeedingWater(CancellationToken token)
     {
-        var plantsNeedingWater = await _db.Set<Plant>()
+        var allPlants = await _db.Set<Plant>()
             .AsNoTracking()
+            .ToListAsync(token);
+
+        var plantsNeedingWater = allPlants
             .Where(p => p.NeedsWater())
             .OrderByDescending(p => p.GetDaysSinceLastWatered())
-            .ToListAsync();
+            .ToList();
 
         return plantsNeedingWater;
     }
