@@ -7,8 +7,16 @@ public static class PlantMapper
 { 
     public static PlantReadDto ToDto(this Plant plant)
     {
-        return new PlantReadDto(plant.Id, plant.Name, plant.Species, plant.Location, plant.LastWatered, plant.WaterFrequency,
-        plant.ImageUrl, plant.WateringLogs.Select(x => x.ToDto()).ToList());
+        return new PlantReadDto(
+            plant.Id, 
+            plant.Name, 
+            plant.Species,
+            plant.Location, 
+            plant.LastWatered, 
+            plant.WaterFrequency,
+            plant.ImageUrl,
+            plant.WateringLogs.Select(x => x.ToDto()).ToList(),
+            plant.GetWateredStatus());
     }
 
     public static Plant ToEntity(this PlantCreateDto dto)

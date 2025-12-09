@@ -24,4 +24,44 @@ public class Plant
     {
         LastWatered = DateTime.UtcNow;
     }
+
+    public bool NeedsWater()
+    {
+        if (LastWatered is null) { return true; }
+
+        var intervalDays = WaterFrequency.GetFrequencyDays();
+        var daysSince = (DateTime.Today - LastWatered.Value.Date).TotalDays;
+
+        return daysSince >= intervalDays;
+    }
+
+    public int GetDaysSinceLastWatered()
+    {
+        if (LastWatered is null) { return int.MaxValue; }
+
+        return (int)(DateTime.Today.Date - LastWatered.Value.Date).TotalDays;
+    }
+
+    public WaterStatus GetWateredStatus()
+    {
+        if (LastWatered is null) 
+        {
+            return WaterStatus.NEVER_WATERED;
+        }
+
+        var daysSince = (DateTime.Today - LastWatered.Value.Date).TotalDays;
+        var freqDays = WaterFrequency.GetFrequencyDays();
+
+        if (daysSince <= freqDays * 0.5)
+        {
+            return WaterStatus.WELL_WATERED;
+        }
+
+        if (daysSince <= freqDays)
+        {
+            return WaterStatus.DUE_SOON;
+        }
+
+        return WaterStatus.OVERDUE;
+    }
 }
