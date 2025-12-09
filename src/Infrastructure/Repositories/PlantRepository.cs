@@ -1,6 +1,7 @@
 using Core.Entities;
 using Core.Interface.Repositories;
 using Infrastructure.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace Core.Interfaces.Repositories;
 
@@ -10,6 +11,12 @@ public class PlantRepository : EfRepository<Plant>, IPlantRepository
 
     public async Task<List<Plant>> GetPlantsNeedingWater(CancellationToken token)
     {
-        return new List<Plant>();
+        var plantsNeedingWater = await _db.Set<Plant>()
+            .AsNoTracking()
+            .Where(p => p.NeedsWater())
+            .OrderByDescending(p => p.GetDaysSinceLastWatered())
+            .ToListAsync();
+
+        return plantsNeedingWater;
     }
 }
