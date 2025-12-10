@@ -57,6 +57,10 @@ else
 
     private void GoToEdit(Guid id) => NavigationManager.NavigateTo($"/plants/edit/{id}");
 
-    private void HandleDelete(Guid id) => Service.DeletePlantAsync(id, default);
+    private async Task HandleDelete(Guid id) 
+    {
+        await Service.DeletePlantAsync(id, default);
+        AllPlants = await Service.GetAllPlantsAsync(default);
+    }
 
 }
