@@ -118,3 +118,44 @@
     font-size: 0.8rem;
     color: #6b7280;
 }
+
+/* WATERING FREQUENCY CHART */
+
+.freq-chart {
+    display: flex;
+    flex-direction: column;
+    gap: 0.55rem;
+}
+
+.freq-row {
+    display: grid;
+    grid-template-columns: 110px 1fr 40px;
+    align-items: center;
+    gap: 0.6rem;
+    font-size: 0.8rem;
+}
+
+.freq-label {
+    color: #4b5563;
+}
+
+.freq-bar-track {
+    position: relative;
+    height: 8px;
+    border-radius: 999px;
+    background: #e5e7eb;
+    overflow: hidden;
+}
+
+.freq-bar-fill {
+    height: 100%;
+    border-radius: inherit;
+    background: linear-gradient(90deg, #4f46e5, #22c55e);
+    transition: width 0.25s ease;
+}
+
+.freq-count {
+    text-align: right;
+    color: #4b5563;
+    font-weight: 500;
+}

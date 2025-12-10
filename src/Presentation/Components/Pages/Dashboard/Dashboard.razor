@@ -74,25 +74,53 @@ else
     </div>
 
     <div class="row mb-4">
+        <div class="col-lg-6 mb-3">
+            <div class="dash-panel">
+                <div class="dash-panel_header">
+                    <h2>Watering frequency overview</h2>
+                    <p class="dash-panel_sub">How your plants are distributed by watering schedule</p>
+                </div>
 
+                @if (!wateringFrequencyStats.Any())
+                {
+                    <p>No plants yet to analyse! </p>
+                }
+                else
+                {
+                    <div class="freq-chart">
+                        @foreach (var stat in wateringFrequencyStats)
+                        {
+                            <div class="freq-row">
+                                <div class="freq-label">@stat.Label</div>
+                                <div class="freq-bar-track">
+                                    <div class="freq-bar-fill" style="width:@stat.Percentage%;"></div>
+                                </div>
+                                <div class="freq-count">@stat.Count</div>
+                            </div>
+                        }
+                    </div>
+                }
+            </div>
+        </div>
     </div>
 }
 
 
 @code {
     private bool isLoading = true;
-    private DateTime today = DateTime.Today;
-
-    private List<PlantReadDto> plantsNeedingWater = new();
-    private int plantsNeedingWaterCount;
-
-    private List<WateringLogReadDto> recentWateringLogs = new();
 
     private List<PlantReadDto> plants = new();
-    private int plantsCount;
+    private List<PlantReadDto> plantsNeedingWater = new();
+    private List<WateringLogReadDto> recentWateringLogs = new();
 
+    private List<WateringFrequencyStat> wateringFrequencyStats = new();
+
+    private int plantsNeedingWaterCount;
+    private int plantsCount;
     private int wateredThisWeek;
+
     private double weeklyWateringLoad;
+
 
     protected override async Task OnInitializedAsync()
     {
@@ -101,6 +129,8 @@ else
 
         await InitializePlantsNeedingWater();
         await InitializeWateringLogsData();
+
+        InitialiseWateringFrequencyStats()
 
         isLoading = false;
     }
@@ -115,10 +145,23 @@ else
     {
         recentWateringLogs = await WateringLogService.GetRecentAsync(100, default);
 
-        var weekStart = today.AddDays(-7);
+        var weekStart = DateTime.Today.AddDays(-7);
         wateredThisWeek = recentWateringLogs.Count(l => l.Date.Date >= weekStart);
 
         weeklyWateringLoad = plants.Sum(p => p.WaterFrequency.GetWeeklyWaterings());       
+    }
+
+    public void InitialiseWateringFrequencyStats()
+    {
+        wateringFrequencyStats = allPlants
+                .GroupBy(p => p.WaterFrequency)
+                .OrderByDescending(g => g.Count())
+                .Select(g => new WateringFrequencyStat(
+                    g.Key.ToString(),
+                    g.Count(),
+                    (int)Math.Round(100.0 * g.Count() / allPlants.Count)
+                ))
+                .ToList();
     }
 
     public void NavigateBackToPlants()
