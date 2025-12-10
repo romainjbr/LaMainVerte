@@ -7,12 +7,12 @@
 @inject IPlantService Service
 
 <div class="plants-header">
-    <div class="header-left">
+    <div class="plants-header-left">
         <div class="plants-title">Your Plants</div>
         <p class="plants-subtitle">Your whole collection of plants is here!</p>
     </div>
 
-    <div class="header-right">
+    <div class="plants-header-right">
         <div class="plants-count-pill">@(AllPlants?.Count ?? 0) plants </div>
 
         <button class="plants-add-btn" type="button" @onclick="GoToAdd">+ Add Plant</button>
