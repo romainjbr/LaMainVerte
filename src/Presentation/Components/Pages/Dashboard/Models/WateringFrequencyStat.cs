@@ -1,1 +1,1 @@
-private record WateringFrequencyStat(string Label, int Count, int Percentage);
+public record WateringFrequencyStat(string Label, int Count, int Percentage);
