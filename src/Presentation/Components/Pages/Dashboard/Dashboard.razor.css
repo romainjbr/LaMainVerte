@@ -93,6 +93,35 @@
     color: #6b7280;
 }
 
+.metric-card_list {
+    list-style: none;
+    padding: 0;
+    margin: 0.35rem 0 0;
+    font-size: 0.8rem;
+    color: #4b5563;
+}
+
+.metric-card_list li + li {
+    margin-top: 0.15rem;
+}
+
+/* COLORS OF METRIC CARDS */
+.metric-card--total {
+    background: radial-gradient(circle at top left, #e0f2fe 0, #f9fafb 55%);
+}
+
+.metric-card--need {
+    background: radial-gradient(circle at top left, #dcfce7 0, #f9fafb 55%);
+}
+
+.metric-card--week {
+    background: radial-gradient(circle at top left, #fee2e2 0, #f9fafb 55%);
+}
+
+.metric-card--load {
+    background: radial-gradient(circle at top left, #fef9c3 0, #f9fafb 55%);
+}
+
 /* DASHBOARD PANELS */
 .dash-panel {
     border-radius: 18px;

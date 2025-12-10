@@ -10,7 +10,7 @@ namespace Core.Tests.Services.PlantServiceTest;
 
 public class PlantServiceTests
 {
-    private readonly Mock<IRepository<Plant>> _repo;
+    private readonly Mock<IPlantRepository> _repo;
     private readonly IPlantService _svc;
 
     private static Plant MakePlant(Guid? id = null) => new()
@@ -44,7 +44,7 @@ public class PlantServiceTests
 
     public PlantServiceTests()
     {
-        _repo = new Mock<IRepository<Plant>>();
+        _repo = new Mock<IPlantRepository>();
         _svc = new PlantService(_repo.Object);
     }
 
