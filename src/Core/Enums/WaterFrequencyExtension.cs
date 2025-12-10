@@ -21,4 +21,24 @@ public static class WaterFrequencyExtensions
                 return 30;
         };
     }
+
+    public static double GetWeeklyWaterings(this WaterFrequency frequency)
+    {
+        switch (frequency)
+        {
+            case WaterFrequency.Daily:
+                return 7.0;
+            case WaterFrequency.EveryTwoDays:
+                return 3.5;
+            case WaterFrequency.TwiceAWeek:
+                return 2.0;
+            case WaterFrequency.Weekly:
+            default:
+                return 1.0;
+            case WaterFrequency.EveryTwoWeeks:
+                return 0.5;
+            case WaterFrequency.Monthly:
+                return 0.25;
+        };       
+    }
 }
