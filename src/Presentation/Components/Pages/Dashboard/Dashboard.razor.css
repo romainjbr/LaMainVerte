@@ -92,3 +92,29 @@
     font-size: 0.8rem;
     color: #6b7280;
 }
+
+/* DASHBOARD PANELS */
+.dash-panel {
+    border-radius: 18px;
+    background: #ffffff;
+    padding: 1.1rem 1.2rem 1.2rem;
+    box-shadow: 0 10px 25px rgba(15, 23, 42, 0.05);
+    height: 100%;
+}
+
+.dash-panel_header {
+    margin-bottom: 0.75rem;
+}
+
+.dash-panel_header h2 {
+    margin: 0;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #111827;
+}
+
+.dash-panel_sub {
+    margin: 0.15rem 0 0.75rem;
+    font-size: 0.8rem;
+    color: #6b7280;
+}
