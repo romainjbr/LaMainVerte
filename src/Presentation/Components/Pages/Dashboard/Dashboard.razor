@@ -193,7 +193,7 @@ else
         weeklyWateringLoad = plants.Sum(p => p.WaterFrequency.GetWeeklyWaterings());       
     }
 
-    public void InitialiseWateringFrequencyStats()
+    private void InitialiseWateringFrequencyStats()
     {
         wateringFrequencyStats = plants
                 .GroupBy(p => p.WaterFrequency)
@@ -206,7 +206,7 @@ else
                 .ToList();
     }
 
-    public void InitialiseLocationStats()
+    private void InitialiseLocationStats()
     {
         locationStats = plants
             .GroupBy(p => p.Location)
@@ -219,7 +219,7 @@ else
             .ToList();
     }
 
-    public void NavigateBackToPlants()
+    private void NavigateBackToPlants()
     {
         NavigationManager.NavigateTo("/plants");
     }
