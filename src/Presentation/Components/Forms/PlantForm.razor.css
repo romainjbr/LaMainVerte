@@ -1,0 +1,34 @@
+.plant-btn {
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-radius: 999px;
+    font-size: 0.8rem;
+    padding: 0.25rem 0.8rem;
+    border: 1px solid transparent;
+    background: transparent;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+}
+
+.plant-btn-save {
+    border-color: #4f46e5;
+    background: #4f46e5;
+    color: #ffffff;
+}
+
+.plant-btn-save:hover {
+    background: #4338ca;
+    border-color: #4338ca;
+}
+
+.plant-btn-cancel {
+    border-color: #fee2e2;
+    background: #fee2e2;
+    color: #b91c1c;
+}
+
+.plant-btn-cancel:hover {
+    background: #fecaca;
+}
