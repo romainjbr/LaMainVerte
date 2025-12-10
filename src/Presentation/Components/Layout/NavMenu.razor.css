@@ -1,3 +1,9 @@
+.app-logo {
+    width: 180px; 
+    height: auto;
+    display: block;
+    margin: 0 auto 1rem;
+}
 
 .sidebar-shell {
     background-color: #ffffff;
@@ -41,23 +47,25 @@
     margin-bottom: 2rem;
     padding: 0.9rem 1rem;
     border-radius: 16px;
-    flex-direction: column;
+    flex-direction: column; 
 }
 
 .user-name {
     font-weight: 600;
     font-size: 0.95rem;
     color: #111827;
+    text-align: center;
 }
 
 .user-sub {
     font-size: 0.75rem;
     color: #6b7280;
+    text-align: center;
 }
 
 .user-avatar {
-    width: 42px;
-    height: 42px;
+    width: 90px;
+    height: 90px;
     border-radius: 50%;
     object-fit: cover;
 }
