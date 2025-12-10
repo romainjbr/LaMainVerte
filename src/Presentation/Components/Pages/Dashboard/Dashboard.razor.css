@@ -159,3 +159,59 @@
     color: #4b5563;
     font-weight: 500;
 }
+
+/* LOCATION CHART */
+
+.location-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+}
+
+.location-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.4rem 0.1rem;
+    border-bottom: 1px solid #f3f4f6;
+    font-size: 0.85rem;
+}
+
+.location-row:last-child {
+    border-bottom: none;
+}
+
+.location-main {
+    display: flex;
+    flex-direction: column;
+    gap: 0.1rem;
+}
+
+.location-name {
+    font-weight: 500;
+    color: #111827;
+}
+
+.location-count {
+    color: #6b7280;
+    font-size: 0.78rem;
+}
+
+.location-overdue {
+    display: flex;
+    align-items: center;
+}
+
+.location-overdue-pill {
+    padding: 0.15rem 0.55rem;
+    border-radius: 999px;
+    background: #fee2e2;
+    color: #b91c1c;
+    font-size: 0.75rem;
+    font-weight: 500;
+}
+
+.location-ok {
+    font-size: 0.75rem;
+    color: #16a34a;
+}

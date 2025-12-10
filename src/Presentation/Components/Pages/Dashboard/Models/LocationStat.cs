@@ -1,0 +1,1 @@
+public record LocationStat(string Location, int Count, int OverdueCount);
