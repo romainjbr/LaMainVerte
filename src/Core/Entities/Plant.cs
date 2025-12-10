@@ -27,12 +27,7 @@ public class Plant
 
     public bool NeedsWater()
     {
-        if (LastWatered is null) { return true; }
-
-        var intervalDays = WaterFrequency.GetFrequencyDays();
-        var daysSince = (DateTime.Today - LastWatered.Value.Date).TotalDays;
-
-        return daysSince >= intervalDays;
+        return GetWateredStatus() == WaterStatus.OVERDUE || GetWateredStatus() == WaterStatus.NEVER_WATERED;
     }
 
     public int GetDaysSinceLastWatered()
