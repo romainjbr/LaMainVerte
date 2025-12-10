@@ -1,0 +1,226 @@
+@page "/dashboard"
+
+@using Core.Dtos
+@using Core.Enums
+@using Core.Interface.Services
+@using Presentation.Components.Cards
+
+@inject IPlantService PlantService
+@inject IWateringLogService WateringLogService
+@inject NavigationManager NavigationManager
+
+<div class="dash-header">
+    <div class="dash-header_left">
+        <h1 class="dash-title">Dashboard</h1>
+        <p class="dash-subtitle">Overview of your plants and watering activity. </p>
+    </div>
+
+    <div class="dash-header_right">
+        <div class="dash-tag">Today • @today.ToString("D")</div>
+    </div>
+</div>
+
+@if (isLoading)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <div class="row mb-4 dash-metrics">
+        <div class="col-md-3 mb-3">
+            <div class="metric-card metric-card--total">
+                <div class="metric-card_label">Total plants</div>
+                <div class="metric-card_value">@plantsCount</div>
+                <button class="metric-card_link" @onclick="NavigateBackToPlants">View plants →</button>
+            </div>
+        </div>
+
+        <div class="col-md-3 mb-3">
+            <div class="metric-card metric-card--need">
+                <div class="metric-card_label">Needing water</div>
+                <div class="metric-card_value">@plantsNeedingWaterCount</div>
+
+                @if (plantsNeedingWaterCount > 0)
+                {
+                    <ul class="metric-card_list">
+                        @foreach (var plant in plantsNeedingWater.Take(3))
+                        {
+                            <li>@plant.Name</li>
+                        }
+                    </ul>
+                }
+                else
+                {
+                    <p class="metric-card_hint">All plants are watered!</p>
+                }
+            </div>
+        </div>
+
+        <div class="col-md-3 mb-3">
+            <div class="metric-card metric-card--week">
+                <div class="metric-card_label">Watered this week</div>
+                <div class="metric-card_value">@wateredThisWeek</div>
+                <p class="metric-card_hint">Waterings in the last 7 days.</p>
+            </div>
+        </div>
+
+        <div class="col-md-3 mb-3">
+            <div class="metric-card metric-card--load">
+                <div class="metric-card_label">Weekly watering load</div>
+                <div class="metric-card_value">@weeklyWateringLoad.ToString("0.#")</div>
+                <p class="metric-card_hint">Estimated waterings per week:</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mb-4">
+        <div class="col-lg-6 mb-3">
+            <div class="dash-panel">
+                <div class="dash-panel_header">
+                    <h2>Watering frequency overview</h2>
+                    <p class="dash-panel_sub">How your plants are distributed by watering schedule</p>
+                </div>
+
+                @if (!wateringFrequencyStats.Any())
+                {
+                    <p>No plants yet to analyse! </p>
+                }
+                else
+                {
+                    <div class="freq-chart">
+                        @foreach (var stat in wateringFrequencyStats)
+                        {
+                            <div class="freq-row">
+                                <div class="freq-label">@stat.Label</div>
+                                <div class="freq-bar-track">
+                                    <div class="freq-bar-fill" style="width:@stat.Percentage%;"></div>
+                                </div>
+                                <div class="freq-count">@stat.Count</div>
+                            </div>
+                        }
+                    </div>
+                }
+            </div>
+        </div>
+
+        <div class="col-lg-6 mb-3">
+            <div class="dash-panel">
+                <div class="dash-panel_header">
+                    <h2>Plants by location</h2>
+                    <p class="dash-panel_sub">See where your plants live and which rooms need attention</p>
+                </div>
+
+                @if (!locationStats.Any())
+                {
+                    <p>No plants yet to analyze.</p>
+                }
+                else
+                {
+                    <div class="location-list">
+                        @foreach (var loc in locationStats)
+                        {
+                            <div class="location-row">
+                                <div class="location-main">
+                                    <div class="location-name">@loc.Location</div>
+                                    <div class="location-count">@loc.Count @((loc.Count == 1) ? "plant" : "plants")</div>
+                                </div>
+                                <div class="location-overdue">
+                                    @if (loc.OverdueCount > 0)
+                                    {
+                                        <span class="location-overdue-pill">@loc.OverdueCount needing water</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="location-ok">All watered</span>
+                                    }
+                                </div>
+                            </div>
+                        }
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+}
+
+
+@code {
+    private bool isLoading = true;
+
+    private List<PlantReadDto> plants = new();
+    private List<PlantReadDto> plantsNeedingWater = new();
+    private List<WateringLogReadDto> recentWateringLogs = new();
+
+    private List<WateringFrequencyStat> wateringFrequencyStats = new();
+    private List<LocationStat> locationStats = new();
+
+    private int plantsNeedingWaterCount;
+    private int plantsCount;
+    private int wateredThisWeek;
+
+    private double weeklyWateringLoad;
+
+    private DateTime today = DateTime.Today;
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        plants = await PlantService.GetAllPlantsAsync(default);
+        plantsCount = plants.Count;
+
+        await InitializePlantsNeedingWater();
+        await InitializeWateringLogsData();
+
+        InitialiseWateringFrequencyStats();
+        InitialiseLocationStats();
+
+        isLoading = false;
+    }
+
+    private async Task InitializePlantsNeedingWater()
+    {
+        plantsNeedingWater = await PlantService.GetPlantsNeedingWater(default);
+        plantsNeedingWaterCount = plantsNeedingWater.Count;      
+    }
+
+    private async Task InitializeWateringLogsData()
+    {
+        recentWateringLogs = await WateringLogService.GetRecentAsync(100, default);
+
+        var weekStart = today.AddDays(-7);
+        wateredThisWeek = recentWateringLogs.Count(l => l.Date.Date >= weekStart);
+
+        weeklyWateringLoad = plants.Sum(p => p.WaterFrequency.GetWeeklyWaterings());       
+    }
+
+    private void InitialiseWateringFrequencyStats()
+    {
+        wateringFrequencyStats = plants
+                .GroupBy(p => p.WaterFrequency)
+                .OrderByDescending(g => g.Count())
+                .Select(g => new WateringFrequencyStat(
+                    g.Key.ToString(),
+                    g.Count(),
+                    (int)Math.Round(100.0 * g.Count() / plants.Count)
+                ))
+                .ToList();
+    }
+
+    private void InitialiseLocationStats()
+    {
+        locationStats = plants
+            .GroupBy(p => p.Location)
+            .Select(g => new LocationStat(
+                g.Key,
+                g.Count(),
+                g.Count(p => p.WaterStatus == WaterStatus.OVERDUE || p.WaterStatus == WaterStatus.NEVER_WATERED)
+            ))
+            .OrderByDescending(x => x.Count)
+            .ToList();
+    }
+
+    private void NavigateBackToPlants()
+    {
+        NavigationManager.NavigateTo("/plants");
+    }
+}

@@ -18,6 +18,7 @@ var connectionString = builder.Configuration.GetConnectionString("AZURE_SQL_CONN
 builder.Services.AddDbContext<PlantDbContext>(options => options.UseSqlServer(connectionString));
 
 builder.Services.AddScoped(typeof(IRepository<>), typeof(EfRepository<>));
+builder.Services.AddScoped<IPlantRepository, PlantRepository>();
 builder.Services.AddScoped<IWateringLogRepository, WateringLogRepository>();
 builder.Services.AddScoped<IPlantService, PlantService>();
 builder.Services.AddScoped<IWateringLogService, WateringLogService>();

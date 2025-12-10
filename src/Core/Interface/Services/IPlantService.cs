@@ -10,4 +10,5 @@ public interface IPlantService
     Task<List<PlantReadDto>> GetAllPlantsAsync(CancellationToken token);
     Task<PlantReadDto?> GetPlantByIdAsync(Guid id, CancellationToken token);
     Task<bool> WaterPlant(Guid id, CancellationToken token);
+    Task<List<PlantReadDto>> GetPlantsNeedingWater(CancellationToken token);
 }

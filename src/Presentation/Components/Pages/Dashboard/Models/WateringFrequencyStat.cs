@@ -1,0 +1,1 @@
+public record WateringFrequencyStat(string Label, int Count, int Percentage);
