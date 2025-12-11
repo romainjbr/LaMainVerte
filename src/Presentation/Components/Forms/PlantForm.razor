@@ -1,5 +1,8 @@
 @using Core.Dtos
 @using Core.Enums
+@using Core.Interface.Services
+
+@inject IPlantImageService ImageService
 
 <EditForm Model="Model">
 
@@ -32,6 +35,15 @@
         <InputDate class="form-control" @bind-Value="Model.LastWatered"/>    
     </div>   
 
+    <div class="form-container">
+        <label class="form-label">Plant Image</label>
+        <InputFile OnChange="HandleFileSelected" accept="image/*" />
+        @if (!string.IsNullOrEmpty(uploadedImage?.Name))
+        {
+            <p class="form-hint">Selected file: @uploadedImage.Name</p>
+        }
+    </div>
+
     <button class="plant-btn plant-btn-save" @onclick="HandleSave">Save</button>
     <button class="plant-btn plant-btn-cancel" @onclick="HandleCancel">Cancel</button>
 
@@ -47,6 +59,27 @@
     
     [Parameter]
     public EventCallback OnCancel { get; set; }
+
+    private IBrowserFile? uploadedImage;
+    private const long MaxFileSize = 5 * 1024 * 1024;
+
+    public async Task HandleFileSelected(InputFileChangeEventArgs e)
+    {
+        uploadedImage = e.File;
+        await HandleFileUrl();
+    }
+
+    public async Task HandleFileUrl()
+    {
+        if (uploadedImage != null)
+        {
+            await using var stream = uploadedImage.OpenReadStream(MaxFileSize);
+
+            var imageUrl = await ImageService.SavePlantImageAsync(stream, uploadedImage.Name, uploadedImage.ContentType, default);
+
+            Model.ImageUrl = imageUrl;
+        }
+    }
 
     public async Task HandleSave()
     {
