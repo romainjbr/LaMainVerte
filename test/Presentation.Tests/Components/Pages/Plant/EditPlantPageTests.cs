@@ -10,10 +10,12 @@ namespace Presentation.Tests.Components.Pages;
 public class EditPlantPageTests : BunitContext
 {
     private readonly Mock<IPlantService> _svc;
+    private readonly Mock<IPlantImageService> _imgSvc;
 
     public EditPlantPageTests()
     {
         _svc = new Mock<IPlantService>();
+        _imgSvc = new Mock<IPlantImageService>();
     }
 
     [Fact]
@@ -23,6 +25,7 @@ public class EditPlantPageTests : BunitContext
             .ReturnsAsync((PlantReadDto?)null);
 
         Services.AddSingleton(_svc.Object);
+        Services.AddSingleton(_imgSvc.Object);
 
         var page = Render<EditPlant>(parameters => parameters.Add(p => p.Id, Guid.NewGuid()));
 
