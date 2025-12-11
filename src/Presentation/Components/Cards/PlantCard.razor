@@ -2,7 +2,7 @@
 @using Presentation.Components.Widgets
 <div class="plant-card">
     <div class="plant-card_image-wrapper">
-        <img src="images/plant_1.jpg" alt="@Plant.Name" class="plant-card_image" />
+        <img src="@Plant.ImageUrl" alt="@Plant.Name" class="plant-card_image" />
 
         @if (!string.IsNullOrWhiteSpace(Plant.Location))
         {
