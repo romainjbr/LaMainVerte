@@ -4,7 +4,7 @@ using Core.Interface.Repositories;
 using Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 
-namespace Core.Interfaces.Repositories;
+namespace Infrastructure.Repositories;
 
 public class EfRepository<T> : IRepository<T> where T : class
 {
