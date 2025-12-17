@@ -48,6 +48,14 @@ public class EfRepositoryPlantTests
         Assert.Equal("https://example.com/monstera.jpg", result.ImageUrl);
     }
 
+    [Fact]
+    public async Task GetByIdAsync_NotFound_ReturnsNull()
+    {
+        var result = await _repo.GetByIdAsync(Guid.NewGuid(), CancellationToken.None);
+
+        Assert.Null(result);
+    }
+
     #endregion 
 
     #region  DeleteAsync
