@@ -57,6 +57,37 @@ public class EfRepositoryWateringLogTests
         Assert.NotNull(result);
         Assert.Equal(wateringLogId, result.Id);
         Assert.Equal(plantId, result.PlantId);
+    } 
+
+    [Fact]
+    public async Task GetByIdAsync_NotFound_ReturnsNull()
+    {
+        var result = await _repo.GetByIdAsync(Guid.NewGuid(), CancellationToken.None);
+
+        Assert.Null(result);
+    }
+
+    #endregion
+
+    #region  DeleteAsync
+
+    [Fact]
+    public async Task DeleteAsync_WateringLogFound_RemoveWateringLog()
+    {
+        var plantId = Guid.NewGuid();
+        var wateringLogId = Guid.NewGuid();
+
+        var plant = GetPlant(plantId);
+        var wateringLog = GetWateringLog(wateringLogId, plantId, plant);
+
+        await _repo.AddAsync(wateringLog, CancellationToken.None);
+
+        Assert.NotNull(await _repo.GetByIdAsync(wateringLog.Id, CancellationToken.None));
+
+        await _repo.DeleteAsync(wateringLog, CancellationToken.None);
+
+        var result = await _repo.GetByIdAsync(wateringLog.Id, CancellationToken.None);
+        Assert.Null(result);
     }
 
     #endregion
