@@ -3,7 +3,7 @@ using Core.Interface.Repositories;
 using Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 
-namespace Core.Interfaces.Repositories;
+namespace Infrastructure.Repositories;
 
 public class PlantRepository : EfRepository<Plant>, IPlantRepository
 {

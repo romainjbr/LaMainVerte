@@ -1,8 +1,9 @@
 using Core.Entities;
 using Core.Interface.Repositories;
-using Core.Interfaces.Repositories;
 using Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
+
+namespace Infrastructure.Repositories;
 
 public class WateringLogRepository : EfRepository<WateringLog>, IWateringLogRepository
 {
