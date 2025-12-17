@@ -21,14 +21,16 @@ public class EditPlantPageTests : BunitContext
     [Fact]
     public void CallsPage_InitiallyDisplaysLoading()
     {
+        var tcs = new TaskCompletionSource<PlantReadDto?>(); 
+            
         _svc.Setup(s => s.GetPlantByIdAsync(It.IsAny<Guid>(), It.IsAny<CancellationToken>()))
-            .ReturnsAsync((PlantReadDto?)null);
+            .Returns(tcs.Task);
 
         Services.AddSingleton(_svc.Object);
         Services.AddSingleton(_imgSvc.Object);
 
         var page = Render<EditPlant>(parameters => parameters.Add(p => p.Id, Guid.NewGuid()));
 
-        page.Markup.Contains("Loading...");
+        Assert.Contains("Loading...", page.Markup);
     }
 }
