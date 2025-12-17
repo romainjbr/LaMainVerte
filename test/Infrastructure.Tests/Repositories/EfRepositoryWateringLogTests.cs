@@ -8,7 +8,7 @@ namespace Infrastructure.Tests.Repositories;
 
 public class EfRepositoryWateringLogTests
 {
-    public EfRepository<WateringLog> _repo;
+    public WateringLogRepository _repo;
 
     public EfRepositoryWateringLogTests()
     {
@@ -18,12 +18,12 @@ public class EfRepositoryWateringLogTests
         db.Database.OpenConnection();
         db.Database.EnsureCreated();      
 
-        _repo = new EfRepository<WateringLog>(db);
+        _repo = new WateringLogRepository(db);
     }
 
-    public static Plant GetPlant(Guid? id) => new Plant
+    public static Plant GetPlant(Guid id) => new Plant
     {
-        Id = id ?? Guid.NewGuid(),
+        Id = id,
         Name = "Monstera",
         Species = "Monstera deliciosa",
         Location = "Living room",
@@ -31,9 +31,9 @@ public class EfRepositoryWateringLogTests
         ImageUrl = "https://example.com/monstera.jpg"
     };
 
-    public static WateringLog GetWateringLog(Guid? id, Guid plantId, Plant plant) => new WateringLog
+    public static WateringLog GetWateringLog(Guid id, Guid plantId, Plant plant) => new WateringLog
     {
-        Id = id ?? Guid.NewGuid(),
+        Id = id,
         PlantId = plantId,
         Plant = plant,
         Date = DateTime.UtcNow       
@@ -44,19 +44,16 @@ public class EfRepositoryWateringLogTests
     [Fact]
     public async Task AddAndGetById_Success_ReturnsCorrectPlant()
     {
-        var plantId = Guid.NewGuid();
-        var wateringLogId = Guid.NewGuid();
-
-        var plant = GetPlant(plantId);
-        var wateringLog = GetWateringLog(wateringLogId, plantId, plant);
+        var plant = GetPlant(Guid.NewGuid());
+        var wateringLog = GetWateringLog(Guid.NewGuid(), plant.Id, plant);
 
         await _repo.AddAsync(wateringLog, CancellationToken.None);
 
         var result = await _repo.GetByIdAsync(wateringLog.Id, CancellationToken.None);
 
         Assert.NotNull(result);
-        Assert.Equal(wateringLogId, result.Id);
-        Assert.Equal(plantId, result.PlantId);
+        Assert.Equal(wateringLog.Id, result.Id);
+        Assert.Equal(plant.Id, result.PlantId);
     } 
 
     [Fact]
@@ -72,13 +69,10 @@ public class EfRepositoryWateringLogTests
     #region  DeleteAsync
 
     [Fact]
-    public async Task DeleteAsync_WateringLogFound_RemoveWateringLog()
+    public async Task DeleteAsync_WateringLogFound_Remove()
     {
-        var plantId = Guid.NewGuid();
-        var wateringLogId = Guid.NewGuid();
-
-        var plant = GetPlant(plantId);
-        var wateringLog = GetWateringLog(wateringLogId, plantId, plant);
+        var plant = GetPlant(Guid.NewGuid());
+        var wateringLog = GetWateringLog(Guid.NewGuid(), plant.Id, plant);
 
         await _repo.AddAsync(wateringLog, CancellationToken.None);
 
@@ -90,5 +84,29 @@ public class EfRepositoryWateringLogTests
         Assert.Null(result);
     }
 
+    #endregion
+
+    #region  DeleteAsync
+
+    [Fact]
+    public async Task GetWateringLogs_Found_ReturnsList()
+    {
+        var plant = GetPlant(Guid.NewGuid());
+
+        var relatedWateringLog_1 = GetWateringLog(Guid.NewGuid(), plant.Id, plant);   
+        var relatedWateringLog_2 = GetWateringLog(Guid.NewGuid(), plant.Id, plant);
+
+        var unrelatedLog = GetWateringLog(Guid.NewGuid(), Guid.NewGuid(), new Plant()); 
+
+        await _repo.AddAsync(relatedWateringLog_1, CancellationToken.None);
+        await _repo.AddAsync(relatedWateringLog_2, CancellationToken.None);
+
+        await _repo.AddAsync(unrelatedLog, CancellationToken.None);
+
+        var logs = await _repo.GetWateringLogsByPlantAsync(plant.Id, CancellationToken.None);
+
+        Assert.Equal(2, logs.Count);
+    }
+    
     #endregion
 }
