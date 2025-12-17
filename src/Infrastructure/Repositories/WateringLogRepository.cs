@@ -17,7 +17,7 @@ public class WateringLogRepository : EfRepository<WateringLog>, IWateringLogRepo
             .Take(10)
             .ToListAsync(token);
 
-        return logs;
+        return logs ?? [];
     }
 
     public async Task<List<WateringLog>> GetWateringLogsByPlantAsync(Guid id, CancellationToken token)
@@ -28,6 +28,6 @@ public class WateringLogRepository : EfRepository<WateringLog>, IWateringLogRepo
             .OrderByDescending(w => w.Date)
             .ToListAsync(token);
         
-        return logs;
+        return logs ?? [];
     }
 }

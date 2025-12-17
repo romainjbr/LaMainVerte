@@ -20,6 +20,6 @@ public class PlantRepository : EfRepository<Plant>, IPlantRepository
             .OrderByDescending(p => p.GetDaysSinceLastWatered())
             .ToList();
 
-        return plantsNeedingWater;
+        return plantsNeedingWater ?? [];
     }
 }
